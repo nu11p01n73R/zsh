@@ -1,8 +1,8 @@
-PROMPT='%F{blue} [ %1~ ] $(git_branch)
+PROMPT=' %F{red}%n@%m%F{yellow} [ %1~ ]
 %F{magenta} >>> %F{white}'
 setopt promptsubst
 
-export EDITOR="/usr/local/bin/vim"
+export EDITOR="/opt/homebrew/bin/nvim"
 
 setopt autocd
 
@@ -42,6 +42,16 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
+# Set vim mode
+bindkey -v
+
+# FZF 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+function offind() {
+    nvim $(ffind)
+}
+
 # Aliases
 alias ls="ls -alhG" 
 
@@ -59,9 +69,14 @@ alias gf="git fetch"
 alias gl="git log"
 alias glo="git log --oneline"
 
+alias lg="lazygit"
+
+alias ffind="fzf --preview='bat -n --color=always {}'"
+
+
 
 # Base16 Shell
-BASE16_SHELL="/src/shell/base16-shell/"
+BASE16_SHELL="$HOME/src/shell/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
@@ -102,5 +117,22 @@ cpv() {
         rsync -h --progress "$@"
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-bindkey -v
+
+function tilde() {
+        sudo hidutil property --set '{
+            "UserKeyMapping":[
+                {
+                    "HIDKeyboardModifierMappingSrc":0x700000035,
+                    "HIDKeyboardModifierMappingDst":0x700000035
+                },
+                {
+                    "HIDKeyboardModifierMappingSrc":0x700000064,
+                    "HIDKeyboardModifierMappingDst":0x700000064
+                }
+             ]
+         }'
+}
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
