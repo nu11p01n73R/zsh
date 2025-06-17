@@ -4,6 +4,8 @@ setopt promptsubst
 
 export EDITOR="/opt/homebrew/bin/nvim"
 
+export XDG_CONFIG_HOME="$HOME/.config"
+
 setopt autocd
 
 autoload -Uz compinit promptinit up-line-or-beginning-search down-line-or-beginning-search
